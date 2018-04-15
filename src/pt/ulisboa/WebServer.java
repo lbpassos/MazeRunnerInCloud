@@ -1,7 +1,10 @@
 package pt.ulisboa;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import java.util.HashMap;
@@ -23,6 +26,7 @@ public class WebServer {
         //server.setExecutor(null); // creates a default executor
         
         //server.setExecutor(Executors.newCachedThreadPool());
+        System.out.println("Server listen in port 8000");
         server.setExecutor(Executors.newFixedThreadPool(numberOfThreads)); //Reservar 5 threads
         
         server.start();
@@ -37,6 +41,7 @@ public class WebServer {
         	
         	String teste = t.getRequestURI().getPath();
         	//System.out.println(teste);
+        	PrintStream console = System.out;	
         	
         	if( !teste.equals("/mzrun.html") ) { //Garantir pagina
         		String response = "404 (Not Found)\n";
@@ -71,10 +76,20 @@ public class WebServer {
 	        			
 	        	//long threadId = Thread.currentThread().getId();
 	            System.out.println(threadId);		
-	        			
+	            	
 	        	//String response = "";
 	            
 	        	try {
+	        		//System.out.println("This goes to the console");
+	        		
+	        		//Write the result (instrumented metrics) in a file
+	        		
+	        		String out_file = "src/output_instrumented/" + "out" + String.valueOf(threadId);
+	        		File file = new File(out_file);
+	        		FileOutputStream fos = new FileOutputStream(file);
+	        		PrintStream ps = new PrintStream(fos);
+	        		System.setOut(ps);
+	        		
 	        		Main.main(arg_maze); //Correr o maze
 
 	        		FileInputStream fs = new FileInputStream(arg_maze[7]); //Ficheiro solucao
@@ -123,7 +138,7 @@ public class WebServer {
 	    	      
 	            //os.write(response.getBytes());
         	}
-            
+        	System.setOut(console);
             System.out.println("Finished " + threadId);
 
             
