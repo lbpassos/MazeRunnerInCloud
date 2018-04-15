@@ -1,0 +1,3 @@
+Status:
+      15-04: First two points of SPRINT: OK
+             Looking for ways of redirect the ouput of the instrumented files to a file (passing the file from argument).
