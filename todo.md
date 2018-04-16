@@ -1,4 +1,4 @@
-![alt text][/figures/todo.jpeg]
+![alt text](/figures/todo.jpeg)
 
 Falta fazer o ponto 3.3
 
