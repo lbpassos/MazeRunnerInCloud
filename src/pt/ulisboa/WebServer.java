@@ -19,6 +19,8 @@ import pt.ulisboa.tecnico.meic.cnv.mazerunner.maze.Main;
 public class WebServer {
 
 	private final static int numberOfThreads = 10;
+	private static ThreadPrint local;
+	private static final PrintStream console = System.out; 
 	
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -29,7 +31,10 @@ public class WebServer {
         System.out.println("Server listen in port 8000");
         server.setExecutor(Executors.newFixedThreadPool(numberOfThreads)); //Reservar 5 threads
         
+        local = new ThreadPrint( console ); //console is the default
+        
         server.start();
+        
     }
 
     static class MyHandler implements HttpHandler {
@@ -41,7 +46,9 @@ public class WebServer {
         	
         	String teste = t.getRequestURI().getPath();
         	//System.out.println(teste);
-        	PrintStream console = System.out;	
+        	//PrintStream console = System.out;
+        	//System.setOut(console);
+        	//System.out.println("aqui");
         	
         	if( !teste.equals("/mzrun.html") ) { //Garantir pagina
         		String response = "404 (Not Found)\n";
@@ -80,18 +87,25 @@ public class WebServer {
 	        	//String response = "";
 	            
 	        	try {
-	        		//System.out.println("This goes to the console");
-	        		
-	        		//Write the result (instrumented metrics) in a file
-	        		
+	        		        		
+	        		//Create file to write instrumentation results
 	        		String out_file = "src/output_instrumented/" + "out" + String.valueOf(threadId);
 	        		File file = new File(out_file);
 	        		FileOutputStream fos = new FileOutputStream(file);
 	        		PrintStream ps = new PrintStream(fos);
-	        		System.setOut(ps);
+	        		local.setCurrent(ps);
+	        		
+	        		System.setOut(local);//Redirect to
 	        		
 	        		Main.main(arg_maze); //Correr o maze
-
+	        		
+	        		
+	        		System.out.println(threadId);
+	        		local.flush();
+	        		fos.close();
+	        		ps.close();
+	        		//local.close();
+	        		
 	        		FileInputStream fs = new FileInputStream(arg_maze[7]); //Ficheiro solucao
 	        		OutputStream os = t.getResponseBody();
 	        		t.sendResponseHeaders(200, 0);
@@ -101,6 +115,7 @@ public class WebServer {
 	        	    while ((count = fs.read(buffer)) >= 0) {
 	        	    	os.write(buffer,0,count);
 	        	    }
+	        	    //System.setOut(console);
 	        	    fs.close();
 	        	    os.close();
 	     
@@ -138,7 +153,8 @@ public class WebServer {
 	    	      
 	            //os.write(response.getBytes());
         	}
-        	System.setOut(console);
+        	//System.setOut(console);
+        	local.setCurrent(console);
             System.out.println("Finished " + threadId);
 
             
