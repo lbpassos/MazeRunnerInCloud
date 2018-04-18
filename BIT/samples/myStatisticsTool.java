@@ -146,7 +146,8 @@ public class myStatisticsTool
 			for (int i = 0; i < filelist.length; i++) {
 				String filename = filelist[i];
 				//if (filename.endsWith(".class")) {
-				if (filename.equals("Main.class")) {
+				//if ( filename.equals("AStarStrategy.class") || filename.equals("BreadthFirstSearchStrategy.class") || filename.equals("DepthFirstSearchStrategy.class") || filename.equals("Main.class")) {
+				if ( filename.equals("RobotController.class") || filename.equals("Main.class") ) {
 					String in_filename = in_dir.getAbsolutePath() + System.getProperty("file.separator") + filename;
 					String out_filename = out_dir.getAbsolutePath() + System.getProperty("file.separator") + filename;
 					ClassInfo ci = new ClassInfo(in_filename);

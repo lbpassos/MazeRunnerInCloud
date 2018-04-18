@@ -1,5 +1,9 @@
 ![alt text](/figures/todo.jpeg)
 
-Falta fazer o ponto 3.3
+Falta fazer o ponto 4
 
-Acabar de Testar solução em threads
+Escolher que classes instrumentar sem aumentar o overhead.
+
+Intsrumentar o RobotController não faz sentido porque o overhead aumenta terrivelmente. Só os algoritmos não dá para extrair conclusões. 
+
+Em estudo.
