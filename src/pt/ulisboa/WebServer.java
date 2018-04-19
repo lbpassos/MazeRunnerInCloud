@@ -1,4 +1,5 @@
 package pt.ulisboa;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +10,11 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.FileReader;
+import java.util.concurrent.TimeUnit;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -21,6 +27,14 @@ public class WebServer {
 	private final static int numberOfThreads = 10;
 	private static ThreadPrint local;
 	private static final PrintStream console = System.out; 
+	private static FileWriter logfile;
+	private static BufferedWriter bw;
+	private static PrintWriter out;
+	
+	public static synchronized void writeLog(String str) {
+		out.println(str);
+		out.flush();
+	}
 	
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -32,6 +46,16 @@ public class WebServer {
         server.setExecutor(Executors.newFixedThreadPool(numberOfThreads)); //Reservar 5 threads
         
         local = new ThreadPrint( console ); //console is the default
+        
+        //Open log file
+        try {
+        	logfile = new FileWriter("src/Log/logfile.txt", true);
+        	bw = new BufferedWriter(logfile);
+        	out = new PrintWriter(bw);
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        }
         
         server.start();
         
@@ -97,14 +121,34 @@ public class WebServer {
 	        		
 	        		System.setOut(local);//Redirect to
 	        		
+	        		long timeMillis = System.currentTimeMillis();  //counting time
 	        		Main.main(arg_maze); //Correr o maze
+	        		long end = System.currentTimeMillis();
+	        		long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(end - timeMillis);
 	        		
 	        		
-	        		System.out.println(threadId);
+	        		//System.out.println(threadId);
 	        		local.flush();
 	        		fos.close();
 	        		ps.close();
 	        		//local.close();
+	        		BufferedReader reader = new BufferedReader(new FileReader(file));
+	        		Long numBlocks = Long.parseLong( reader.readLine() );
+	        		reader.close();
+	        		
+	        		    	        		
+	        		String lineOfText = threadId + "," 
+	        		           + arg_maze[0] + ","
+	        		           + arg_maze[1] + ","
+	        		           + arg_maze[2] + ","
+	        		           + arg_maze[3] + ","
+	        		           + arg_maze[4] + ","
+	        		           + arg_maze[5] + ","
+	        		           + result.get("m") + ","
+	        		           + numBlocks + ","
+	        		           + timeSeconds;
+	        		           
+	        		writeLog(lineOfText);
 	        		
 	        		FileInputStream fs = new FileInputStream(arg_maze[7]); //Ficheiro solucao
 	        		OutputStream os = t.getResponseBody();

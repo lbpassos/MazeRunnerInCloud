@@ -1,7 +1,7 @@
 # Log
 
 - **18-04**
-  - Writing results from each thread solved.
+  - Writing results from each thread solved. Metrics retrieved successfully. All metrics stored in a file (read in excel)
 - **16-04**
   - Concurrency problems in writing in different files in different threads solved. Had to overrite PrintStream class Created ThreadPrint class 
   - Possible solution to the thread ID problem implemented
