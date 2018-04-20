@@ -46,29 +46,51 @@ public class myStatisticsTool
 	private static String branch_class_name;
 	private static String branch_method_name;
 
-	static Map<Long,Long> t = new HashMap<Long,Long>();
+	static Map<Long,Counters> t = new HashMap<Long,Counters>();
 
-	public static synchronized void inc(Long t_id) {
-		if( t.containsKey(t_id)==true ) {
-			Long tmp = t.get( t_id );
-			++tmp;
-			t.put(t_id, tmp);
-		}
-		else {
-			t.put(t_id, new Long(1) );
-		}
-	}
-
-	public static synchronized void erase(Long t_id) {
+    public static void incMethod(Long t_id) {
+    		Counters tmp;
+    		if( t.containsKey(t_id)==true ) {
+    			tmp = t.get(t_id);
+    			tmp.incMethod();
+    			t.put(t_id, tmp);
+    		}
+    		else {
+    		    tmp = new Counters();
+    		    tmp.incMethod();
+    			t.put(t_id,  tmp);
+    		}
+    	}
+    
+    public static void incInstruction(Long t_id) {
+    		Counters tmp;
+    		if( t.containsKey(t_id)==true ) {
+    			tmp = t.get(t_id);
+    			tmp.incInstruction();
+    			t.put(t_id, tmp);
+    		}
+    		else {
+    		    tmp = new Counters();
+    		    tmp.incInstruction();
+    			t.put(t_id,  tmp);
+    		}
+    	}
+    	
+	public static void erase(Long t_id) {
 		if(t.containsKey(t_id)==true) {
 			t.remove(t_id);
 		}
 	}
 	
-	public static synchronized Long getValue(Long t_id) {
-		return t.get(t_id);
+	public static Integer getMethodCount(Long t_id) {
+		return t.get(t_id).getMethod();
 	}
-
+	
+	public static Integer getInstructionCount(Long t_id) {
+		return t.get(t_id).getInstruction();
+	}
+	
+	
 		
 	public static void printUsage() 
 		{
@@ -153,12 +175,26 @@ public class myStatisticsTool
 					ClassInfo ci = new ClassInfo(in_filename);
 					for (Enumeration e = ci.getRoutines().elements(); e.hasMoreElements(); ) {
 						Routine routine = (Routine) e.nextElement();
-						//routine.addBefore("myStatisticsTool", "dynMethodCount", new Integer(1));
+						
                     
-						for (Enumeration b = routine.getBasicBlocks().elements(); b.hasMoreElements(); ) {
+						if( routine.getMethodName().equals("run") ) {
+							//routine.addBefore("myStatisticsTool", "dynMethodCount", new Integer(1));
+							InstructionArray instructions = routine.getInstructionArray();
+							for (Enumeration b = routine.getBasicBlocks().elements(); b.hasMoreElements(); ) {
+								BasicBlock bb = (BasicBlock) b.nextElement();
+								Instruction instr = (Instruction) instructions.elementAt(bb.getEndAddress());
+								short instr_type = InstructionTable.InstructionTypeTable[instr.getOpcode()];
+								if (instr_type == InstructionTable.CONDITIONAL_INSTRUCTION) {
+									instr.addBefore("myStatisticsTool", "dynInstrCount", new Integer(bb.size()));
+									break;
+								}
+							}
+							
+						}
+						/*for (Enumeration b = routine.getBasicBlocks().elements(); b.hasMoreElements(); ) {
 							BasicBlock bb = (BasicBlock) b.nextElement();
 							bb.addBefore("myStatisticsTool", "dynInstrCount", new Integer(bb.size()));
-						}
+						}*/
 					}
 					ci.addAfter("myStatisticsTool", "printDynamic", "null");
 					ci.write(out_filename);
@@ -168,14 +204,19 @@ public class myStatisticsTool
 	
     public static synchronized void printDynamic(String foo) 
 		{
-			System.out.println("Dynamic information summary:");
+			//System.out.println("Dynamic information summary:");
 			//System.out.println("Number of methods:      " + dyn_method_count);
 			//System.out.println("Number of basic blocks: " + dyn_bb_count);
 			//System.out.println("Number of instructions: " + dyn_instr_count);
 			
 			long threadId = Thread.currentThread().getId();
-			long x = getValue( new Long(threadId) ).longValue();
-			System.out.println("Number of basic blocks: " + x);
+			
+			long x = getInstructionCount(threadId); // So as instrucoes
+			System.out.println(x);
+			//x = getMethodCount(threadId);
+			//System.out.println(x);
+			
+			
 			erase(threadId);
 
 			//System.out.println("My thread: " + threadId);
@@ -206,12 +247,13 @@ public class myStatisticsTool
 			long threadId = Thread.currentThread().getId();
 			
 			//dyn_bb_count++;
-			inc(threadId);
+			incInstruction(threadId);
 		}
 
     public static synchronized void dynMethodCount(int incr) 
 		{
-			dyn_method_count++;
+    		long threadId = Thread.currentThread().getId();
+    		incMethod(threadId);
 		}
 	
 	public static void doAlloc(File in_dir, File out_dir) 

@@ -1,0 +1,22 @@
+thread id, xi, yi, xf, yf, velocity, algorithm, maze size, num blocks, time[s]
+15,3,9,78,89,100,bfs,Maze100.maze,312200,30
+14,3,9,78,89,50,bfs,Maze100.maze,624400,60
+13,3,9,78,89,25,bfs,Maze100.maze,1248800,118
+17,3,9,78,89,100,dfs,Maze100.maze,79200,15
+16,3,9,78,89,25,dfs,Maze100.maze,316800,36
+18,3,9,78,89,50,dfs,Maze100.maze,158400,14
+20,3,9,78,89,100,astar,Maze100.maze,123900,14
+21,3,9,78,89,50,astar,Maze100.maze,247800,30
+15,3,9,78,89,25,astar,Maze100.maze,495600,48
+19,3,9,78,89,1,dfs,Maze100.maze,7920000,695
+14,3,9,78,89,1,astar,Maze100.maze,12390000,1083
+12,3,9,78,89,1,bfs,Maze100.maze,31220000,2713
+13,3,9,4,9,1,bfs,Maze100.maze,20000,1
+17,3,9,4,9,1,dfs,Maze100.maze,20000,1
+12,3,9,4,19,1,astar,Maze100.maze,1030000,89
+12,3,9,4,19,100,astar,Maze250.maze,3600,0
+14,3,9,2,9,100,dfs,Maze250.maze,800,0
+12,3,9,78,89,100,dfs,Maze250.maze,5004000,431
+15,3,9,78,89,100,bfs,Maze250.maze,839300,73
+16,3,9,78,89,100,astar,Maze250.maze,456500,39
+

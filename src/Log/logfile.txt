@@ -1,3 +1,13 @@
 thread id, xi, yi, xf, yf, velocity, algorithm, maze size, num blocks, time[s]
-
-12,3,9,78,89,100,dfs,Maze100.maze,1069519176,24
+12,3,9,78,89,100,astar,Maze100.maze,125139,11
+13,3,9,78,89,50,astar,Maze100.maze,249039,21
+14,3,9,78,89,25,astar,Maze100.maze,496839,42
+16,3,9,78,89,100,bfs,Maze100.maze,315322,27
+17,3,9,78,89,50,bfs,Maze100.maze,627522,54
+18,3,9,78,89,25,bfs,Maze100.maze,1251922,107
+20,3,9,78,89,100,dfs,Maze100.maze,79992,6
+21,3,9,78,89,50,dfs,Maze100.maze,159192,13
+12,3,9,78,89,25,dfs,Maze100.maze,317592,27
+13,3,9,78,89,1,dfs,Maze100.maze,7920792,704
+15,3,9,78,89,1,astar,Maze100.maze,12391239,1093
+19,3,9,78,89,1,bfs,Maze100.maze,31223122,2724

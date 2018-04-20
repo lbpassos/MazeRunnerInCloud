@@ -133,10 +133,18 @@ public class WebServer {
 	        		ps.close();
 	        		//local.close();
 	        		BufferedReader reader = new BufferedReader(new FileReader(file));
-	        		Long numBlocks = Long.parseLong( reader.readLine() );
+	        		
+	        		Long numBlocks = new Long(0);
+	        		try {
+	        			numBlocks = Long.parseLong( reader.readLine() );
+	        		}
+	        		catch(NumberFormatException e) {
+	        			e.printStackTrace();
+	        		}
+	        		
 	        		reader.close();
 	        		
-	        		    	        		
+	        		     	        		
 	        		String lineOfText = threadId + "," 
 	        		           + arg_maze[0] + ","
 	        		           + arg_maze[1] + ","
