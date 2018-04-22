@@ -1,3 +1,3 @@
 ![alt text](/figures/todo.jpeg)
 
-Falta pôr no AWS
+Adicionar ao Webserver capacidade para KeepAlives
