@@ -39,6 +39,7 @@ public class WebServer {
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
         server.createContext("/", new MyHandler());
+        server.createContext("/test", new MyTestHandler());
         //server.setExecutor(null); // creates a default executor
         
         //server.setExecutor(Executors.newCachedThreadPool());
@@ -61,6 +62,17 @@ public class WebServer {
         
     }
 
+    static class MyTestHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            String response = "ok";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+    
     static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
