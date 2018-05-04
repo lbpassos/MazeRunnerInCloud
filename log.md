@@ -1,5 +1,7 @@
 # Log
 
+- **03-05**
+  - Work started in DynamoDB
 - **21-04**
   - WebServer in AWS
 - **18-04**
