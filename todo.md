@@ -1,3 +1,3 @@
 ![alt text](/figures/todo.jpeg)
 
-DynamoDB in progress
+Test and integrate DynamoDB module

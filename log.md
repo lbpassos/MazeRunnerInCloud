@@ -1,5 +1,7 @@
 # Log
 
+- **06-05**
+  - DynamoDB finished
 - **03-05**
   - Work started in DynamoDB
 - **21-04**

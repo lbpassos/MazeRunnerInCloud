@@ -2,7 +2,6 @@
 //import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 
 
-//@DynamoDBDocument
 public class RequestCoordinate {
 	private Coordinate start;
 	private Coordinate end;
@@ -13,28 +12,29 @@ public class RequestCoordinate {
 	}
 	
 	
-	//@DynamoDBAttribute(attributeName = "start")
 	public Coordinate getStart() { return start; }
-	//@DynamoDBAttribute(attributeName = "stop")
+	
 	public Coordinate getStop() { return end; }
 	
-	@Override
-	public int hashCode() {
-		return start.hashCode() + end.hashCode();
+	public double getNorm() {
+		return Math.sqrt( (start.getX()-end.getX())*(start.getX()-end.getX()) + (start.getY()-end.getY())*(start.getY()-end.getY()) );
 	}
 	
-	
+		
 	@Override
 	public boolean equals(Object other){
 	    if (other == null) return false;
 	    if (other == this) return true;
 	    if (!(other instanceof RequestCoordinate))return false;
 	    RequestCoordinate otherMyClass = (RequestCoordinate)other;
-	    
-	    if( start.equals(otherMyClass.getStart()) && end.equals(otherMyClass.getStop()) ) {
+	    if( start.equals(otherMyClass.getStart()) && end.equals(otherMyClass.getStop()) ){
 	    	return true;
 	    }
-	    return false;
+	    return false;    
 	}
-
+	
+	@Override
+	public int hashCode() {
+		return start.hashCode() + end.hashCode();
+	}
 }

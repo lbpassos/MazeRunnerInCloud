@@ -10,7 +10,6 @@ public class Coordinate {
 	
 	}
 	
-	
 	public int getX() {
 		return x;
 	}
@@ -18,6 +17,7 @@ public class Coordinate {
 	public int getY() {
 		return y;
 	}
+	
 	
 	@Override
 	public boolean equals(Object other){
