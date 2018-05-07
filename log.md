@@ -1,5 +1,7 @@
 # Log
 
+- **07-05**
+  - DynamoDB integrated in the webserver
 - **06-05**
   - DynamoDB finished
 - **03-05**

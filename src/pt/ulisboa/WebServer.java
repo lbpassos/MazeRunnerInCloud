@@ -21,6 +21,8 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import pt.ulisboa.tecnico.meic.cnv.mazerunner.maze.Main;
+import pt.ulisboa.DynamoDB.AmazonDynamoDBModule;
+import pt.ulisboa.DynamoDB.RequestCoordinate;
 
 public class WebServer {
 
@@ -29,12 +31,12 @@ public class WebServer {
 	private static final PrintStream console = System.out; 
 	private static FileWriter logfile;
 	private static BufferedWriter bw;
-	private static PrintWriter out;
+	//private static PrintWriter out;
 	
-	public static synchronized void writeLog(String str) {
+	/*public static synchronized void writeLog(String str) {
 		out.println(str);
 		out.flush();
-	}
+	}*/
 	
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -49,19 +51,23 @@ public class WebServer {
         local = new ThreadPrint( console ); //console is the default
         
         //Open log file
-        try {
+        /*try {
         	logfile = new FileWriter("src/Log/logfile.txt", true);
         	bw = new BufferedWriter(logfile);
         	out = new PrintWriter(bw);
         }
         catch(Exception e) {
         	e.printStackTrace();
-        }
+        }*/
+        //Init dynamoDB
+        
+        AmazonDynamoDBModule.init();
         
         server.start();
         
     }
 
+    //For ping purposes of the load balancer
     static class MyTestHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
@@ -81,10 +87,7 @@ public class WebServer {
         	long threadId = Thread.currentThread().getId(); //Debug
         	
         	String teste = t.getRequestURI().getPath();
-        	//System.out.println(teste);
-        	//PrintStream console = System.out;
-        	//System.setOut(console);
-        	//System.out.println("aqui");
+        	
         	
         	if( !teste.equals("/mzrun.html") ) { //Garantir pagina
         		String response = "404 (Not Found)\n";
@@ -157,7 +160,7 @@ public class WebServer {
 	        		reader.close();
 	        		
 	        		     	        		
-	        		String lineOfText = threadId + "," 
+	        		/*String lineOfText = threadId + "," 
 	        		           + arg_maze[0] + ","
 	        		           + arg_maze[1] + ","
 	        		           + arg_maze[2] + ","
@@ -167,8 +170,11 @@ public class WebServer {
 	        		           + result.get("m") + ","
 	        		           + numBlocks + ","
 	        		           + timeSeconds;
-	        		           
-	        		writeLog(lineOfText);
+	        		  */         
+	        		//writeLog(lineOfText);
+	        		//Write in DynamoDB
+	        		RequestCoordinate mrc = AmazonDynamoDBModule.fromStringToRequestCoordinate(arg_maze[0], arg_maze[1], arg_maze[2], arg_maze[3]);
+	        		AmazonDynamoDBModule.insertRequestCoordinateInDynamoDB(result.get("m"), arg_maze[5], arg_maze[4], mrc, numBlocks);
 	        		
 	        		FileInputStream fs = new FileInputStream(arg_maze[7]); //Ficheiro solucao
 	        		OutputStream os = t.getResponseBody();
@@ -196,26 +202,7 @@ public class WebServer {
 	        	}
 	        	
 	        	
-	        	//int x_start = Integer.parseInt( result.get("x0") );
 	        	
-	        	
-	        	// Teste das threads
-	            /*
-	            try        
-	            {
-	                Thread.sleep(60000);
-	            } 
-	            catch(InterruptedException ex) 
-	            {
-	                Thread.currentThread().interrupt();
-	            }
-	            
-	        	*/
-	        	//String response = "This was the query:" + t.getRequestURI().getQuery() 
-	            //                   + "##";
-	            
-	    	      
-	            //os.write(response.getBytes());
         	}
         	//System.setOut(console);
         	local.setCurrent(console);

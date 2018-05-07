@@ -9,5 +9,7 @@
   - Take the .class (tool used) from samples and put it int bin folder: ```webserver_cnv/bin```
   - Take the .class (instrumented class) from ```BIT/samples``` and put it respective path int the webserver.
   - To generate the instrumented class run: ```java myStatisticsTool -dynamic <path_to_folder_to_instrument>/. <full_path>/BIT/examples/output```
- 
+- To run dynamo
+  - java -cp "bin:/tmp/aws-java-sdk-1.11.321/lib/aws-java-sdk-1.11.321.jar:/tmp/aws-java-sdk-1.11.321/third-party/lib/*:." pt.ulisboa.WebServer
+  - Don't forget ./AWS
 
