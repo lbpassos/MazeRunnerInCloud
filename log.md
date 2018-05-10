@@ -1,5 +1,7 @@
 # Log
 
+- **10-05**
+  - ProxyServer created
 - **07-05**
   - DynamoDB integrated in the webserver
 - **06-05**

@@ -1,3 +1,3 @@
 ![alt text](/figures/todo.jpeg)
 
-Proxy Server
+Implement algorithm of balancer in ProxyServer
