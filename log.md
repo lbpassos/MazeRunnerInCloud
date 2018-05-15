@@ -1,5 +1,7 @@
 # Log
 
+- **15-05**
+  - Classes of service created
 - **10-05**
   - ProxyServer created
 - **07-05**

@@ -1,3 +1,3 @@
 ![alt text](/figures/todo.jpeg)
 
-Implement algorithm of balancer in ProxyServer
+Integration of classes of service
