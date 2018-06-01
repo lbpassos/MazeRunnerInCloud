@@ -7,8 +7,30 @@ public abstract class MazeRunningStrategy {
 
 	public final void solve(Maze maze, int xStart, int yStart, int xFinal, int yFinal, int velocity) 
 			throws InvalidCoordinatesException  {
-		if(maze.isWall(xStart, yStart) || maze.isWall(xFinal, yFinal)) {
-			throw new InvalidCoordinatesException("Trying starting inside a wall or outside the maze!");
+		boolean isStartWall = maze.isWall(xStart, yStart);
+		boolean isFinalWall = maze.isWall(xFinal, yFinal);
+		if(isStartWall || isFinalWall) {
+			String exceptionMessage = "";
+			if(isStartWall) {
+				exceptionMessage += "Start Point Invalid, suggestions: ";
+				for(int x = xStart - 1; x <= xStart + 1; x++) {
+					for(int y = yStart - 1; y <= yStart + 1; y++) {
+						if(x == xStart && y == yStart) {continue;}
+						if(!maze.isWall(x, y)) { exceptionMessage += "(" + x +"," + y + ") | "; }
+					}
+				}
+				exceptionMessage += "\n";
+			}
+			if(isFinalWall) {
+				exceptionMessage += "Final Point Invalid, suggestions: ";
+				for(int x = xFinal - 1; x <= xFinal + 1; x++) {
+					for(int y = yFinal - 1; y <= yFinal + 1; y++) {
+						if(x == xFinal && y == yFinal) {continue;}
+						if(!maze.isWall(x, y)) { exceptionMessage += "(" + x +"," + y + ") | "; }
+					}
+				}
+			}
+			throw new InvalidCoordinatesException(exceptionMessage);
 		}
 		
 		run(maze, xStart, yStart, xFinal, yFinal, velocity);

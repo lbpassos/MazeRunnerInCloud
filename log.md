@@ -1,5 +1,7 @@
 # Log
 
+- **01-06**
+  - ProxyServer with AWS added
 - **15-05**
   - Classes of service created
 - **10-05**

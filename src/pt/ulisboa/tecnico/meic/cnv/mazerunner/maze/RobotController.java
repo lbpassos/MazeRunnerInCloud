@@ -14,7 +14,7 @@ public class RobotController {
 		byte photoAnalyzer = 0;
 		long currentObserveTime = 0;
 		for(int k = 0; k < observeTime; k++) {
-			for(int i = 0; i < 1250; i++) {
+			for(int i = 0; i < 25; i++) {
 				// Analyzing the photo of the position.
 				for(int photoIndex = 0; photoIndex < photo.length; photoIndex++) {
 					photoAnalyzer = photo[photoIndex];
@@ -34,7 +34,7 @@ public class RobotController {
 		int minVelocityLoops = 10000;
 		// Time to run into the next maze position.
 		for(int k = 0; k < minVelocityLoops / velocity; k++) {
-			for(int i = 0; i < 4500; i++) {
+			for(int i = 0; i < 75; i++) {
 				currentRunTime = System.currentTimeMillis();
 			}
 		}
